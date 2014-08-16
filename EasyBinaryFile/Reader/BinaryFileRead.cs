@@ -28,6 +28,10 @@ namespace EasyBinaryFile.Reader
         /// 是否开启字符串智能压缩
         /// </summary>
         public bool EnableSmartGzip { get; private set; }
+        /// <summary>
+        /// 基础二进制读取流
+        /// </summary>
+        public BinaryReader BaseReader { get { return this._binaryReader; } }
         #endregion
 
         #region 构造
@@ -95,7 +99,7 @@ namespace EasyBinaryFile.Reader
         /// 读取缓冲区的所有内容到字符串
         /// </summary>
         /// <returns>字符串</returns>
-        public string ReadString()
+        public virtual string ReadString()
         {
             return this.ReadString(Encoding.UTF8);
         }
@@ -105,7 +109,7 @@ namespace EasyBinaryFile.Reader
         /// <param name="startPosition">起始位置</param>
         /// <param name="endPosition">结束位置</param>
         /// <returns>字符串</returns>
-        public string ReadString(long startPosition, long endPosition)
+        public virtual string ReadString(long startPosition, long endPosition)
         {
             return this.ReadString(startPosition, endPosition, Encoding.UTF8);
         }
@@ -114,7 +118,7 @@ namespace EasyBinaryFile.Reader
         /// </summary>
         /// <param name="encoding">编码</param>
         /// <returns>字符串</returns>
-        public string ReadString(Encoding encoding)
+        public virtual string ReadString(Encoding encoding)
         {
             return this.ReadString(0, this.fileEndPosition, encoding);
         }
@@ -125,7 +129,7 @@ namespace EasyBinaryFile.Reader
         /// <param name="endPosition">结束位置</param>
         /// <param name="encoding">编码</param>
         /// <returns>字符串</returns>
-        public string ReadString(long startPosition, long endPosition, Encoding encoding)
+        public virtual string ReadString(long startPosition, long endPosition, Encoding encoding)
         {
             Preconditions.CheckLessZero(startPosition, "startPosition");
             Preconditions.CheckLessZero(endPosition - startPosition, "endPosition - startPosition");
@@ -146,7 +150,7 @@ namespace EasyBinaryFile.Reader
         /// </summary>
         /// <param name="offset">偏移量</param>
         /// <returns>字符串</returns>
-        public string ReadStringOffset(int offset)
+        public virtual string ReadStringOffset(int offset)
         {
             return this.ReadStringOffset(0, offset, Encoding.UTF8);
         }
@@ -156,7 +160,7 @@ namespace EasyBinaryFile.Reader
         /// <param name="offset">偏移量</param>
         /// <param name="encoding">编码</param>
         /// <returns>字符串</returns>
-        public string ReadStringOffset(int offset, Encoding encoding)
+        public virtual string ReadStringOffset(int offset, Encoding encoding)
         {
             return this.ReadStringOffset(0, offset, encoding);
         }
@@ -166,7 +170,7 @@ namespace EasyBinaryFile.Reader
         /// <param name="startPosition">起始位置</param>
         /// <param name="offset">偏移量</param>
         /// <returns>字符串</returns>
-        public string ReadStringOffset(long startPosition, int offset)
+        public virtual string ReadStringOffset(long startPosition, int offset)
         {
             return this.ReadStringOffset(startPosition, offset, Encoding.UTF8);
         }
@@ -177,7 +181,7 @@ namespace EasyBinaryFile.Reader
         /// <param name="offset">偏移量</param>
         /// <param name="encoding">编码</param>
         /// <returns>字符串</returns>
-        public string ReadStringOffset(long startPosition, int offset, Encoding encoding)
+        public virtual string ReadStringOffset(long startPosition, int offset, Encoding encoding)
         {
             Preconditions.CheckLessZero(startPosition, "startPosition");
             Preconditions.CheckLessZero(offset, "offset");
@@ -198,7 +202,7 @@ namespace EasyBinaryFile.Reader
         /// <param name="startPosition">起始位置</param>
         /// <param name="offset">offset</param>
         /// <returns>字节数组</returns>
-        public byte[] ReadByteOffset(long startPosition, int offset)
+        public virtual byte[] ReadByteOffset(long startPosition, int offset)
         {
             Preconditions.CheckLessZero(offset, "offset");
             return this.ReadByte(startPosition, startPosition + offset);
@@ -208,7 +212,7 @@ namespace EasyBinaryFile.Reader
         /// </summary>
         /// <param name="offset">偏移量</param>
         /// <returns>字节数组</returns>
-        public byte[] ReadByte(int offset)
+        public virtual byte[] ReadByte(int offset)
         {
             return this.ReadByte(0, offset);
         }
@@ -218,7 +222,7 @@ namespace EasyBinaryFile.Reader
         /// <param name="startPosition">起始位置</param>
         /// <param name="endPosition">结束位置</param>
         /// <returns>字节数组</returns>
-        public byte[] ReadByte(long startPosition, long endPosition)
+        public virtual byte[] ReadByte(long startPosition, long endPosition)
         {
             Preconditions.CheckLessZero(endPosition - startPosition, "endPosition - startPosition");
             Preconditions.CheckLessZero(endPosition, "endPosition");

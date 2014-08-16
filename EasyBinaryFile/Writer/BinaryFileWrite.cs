@@ -28,6 +28,10 @@ namespace EasyBinaryFile.Writer
         /// 是否开启字符串智能压缩
         /// </summary>
         public bool EnableSmartGzip { get; private set; }
+        /// <summary>
+        /// 基础二进制写入流
+        /// </summary>
+        public BinaryWriter BaseWriter { get { return this._binaryWriter; } }
         #endregion
 
         #region 构造
@@ -278,6 +282,14 @@ namespace EasyBinaryFile.Writer
         public virtual void Write(ushort value)
         {
             this.Write(BitConverter.GetBytes(value));
+        }
+        /// <summary>
+        /// 向当前流中写入一个字节，并将此流中的当前位置提升写入的字节数
+        /// </summary>
+        /// <param name="value">要写入的字节</param>
+        public virtual void Write(byte value)
+        {
+            this.Write(new byte[] { value });
         }
         #endregion
 

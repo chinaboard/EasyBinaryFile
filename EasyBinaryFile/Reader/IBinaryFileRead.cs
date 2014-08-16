@@ -7,6 +7,7 @@ namespace EasyBinaryFile.Reader
 {
     public interface IBinaryFileRead
     {
+
         string ReadString();
         string ReadString(long startPosition, long endPosition);
         string ReadString(Encoding encoding);
@@ -22,5 +23,6 @@ namespace EasyBinaryFile.Reader
         byte[] ReadByteOffset(long startPosition, int offset);
         byte[] ReadByte(int offset);
         byte[] ReadByte(long startPosition, long endPosition);
+
     }
 }

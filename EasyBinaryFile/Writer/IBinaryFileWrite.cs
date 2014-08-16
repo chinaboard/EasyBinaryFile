@@ -34,5 +34,6 @@ namespace EasyBinaryFile.Writer
         void Write(uint value);
         void Write(ulong value);
         void Write(ushort value);
+        void Write(byte value);
     }
 }
