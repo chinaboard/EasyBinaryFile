@@ -31,7 +31,11 @@ namespace EasyBinaryFile.Test
             writer.Write(smartText);
             //writer.Write(BitConverter.GetBytes(int.MinValue));
             //Console.WriteLine(reader.ReadString() == smartText);
-            File.Delete("test.txt");
+            //ef.Dispose();
+
+            writer.Write(BitConverter.GetBytes(int.MinValue));
+
+            //File.Delete("test.txt");
         }
     }
 }
