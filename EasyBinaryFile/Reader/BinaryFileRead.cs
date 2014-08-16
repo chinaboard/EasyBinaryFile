@@ -78,7 +78,7 @@ namespace EasyBinaryFile.Reader
         /// <param name="access">文件控制方式</param>
         /// <param name="enableSmartGzip">是否开启字符串智能压缩</param>
         /// <param name="bufferSize">缓冲区大小</param>
-        public BinaryFileRead(string path, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite, bool enableSmartGzip = true, int bufferSize = 4096)
+        public BinaryFileRead(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite, int bufferSize = 4096)
         {
             Preconditions.CheckNotBlank(path, "path");
             if (!File.Exists(path))

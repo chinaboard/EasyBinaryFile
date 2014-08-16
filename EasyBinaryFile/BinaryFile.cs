@@ -38,7 +38,7 @@ namespace EasyBinaryFile
             this.EnableSmartGzip = enableSmartGzip;
         }
 
-        public BinaryFile(string path, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite, bool enableSmartGzip = true, int bufferSize = 4096)
+        public BinaryFile(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite, int bufferSize = 4096)
         {
             Preconditions.CheckNotBlank(path, "path");
             if (!File.Exists(path))
@@ -57,12 +57,12 @@ namespace EasyBinaryFile
         public BinaryFileRead GetReader()
         {
             Preconditions.CheckDisposed(this.IsDisposed, this.GetType().Name);
-            return new BinaryFileRead(this._bufferStream);
+            return new BinaryFileRead(this._bufferStream, this.EnableSmartGzip);
         }
         public BinaryFileWrite GetWriter()
         {
             Preconditions.CheckDisposed(this.IsDisposed, this.GetType().Name);
-            return new BinaryFileWrite(this._bufferStream);
+            return new BinaryFileWrite(this._bufferStream, this.EnableSmartGzip);
         }
         #endregion
 
