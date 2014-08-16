@@ -10,8 +10,9 @@ namespace EasyBinaryFile.Test
     {
         static void Main(string[] args)
         {
-            Test1();
-            Test2();
+            //Test1();
+            //Test2();
+            Test3();
             Console.Read();
         }
 
@@ -73,6 +74,35 @@ namespace EasyBinaryFile.Test
             Console.WriteLine(r2);
             Console.WriteLine(r1 == r2);
             Console.WriteLine(r1 == str2);
+
+            ef.Dispose();
+
+            File.Delete("Test.txt");
+        }
+
+        static void Test3()
+        {
+            File.Delete("Test.txt");
+
+            BinaryFile ef = new BinaryFile(@"Test.txt", FileMode.OpenOrCreate);
+
+            var str = "testString";
+
+            var data = Encoding.UTF8.GetBytes(str);
+
+            var length = data.Length;
+
+            long persion;
+
+            ef.Write(0, Encoding.UTF8.GetBytes(str), out persion);
+
+            Console.WriteLine(ef.Read(0, persion, Encoding.UTF8));
+
+            ef.Write(2, Encoding.UTF8.GetBytes("ABCD"), out persion);
+
+            Console.WriteLine(ef.Read(0, ef.Length, Encoding.UTF8));
+            Console.WriteLine(ef.Read(2, persion, Encoding.UTF8));
+
 
             ef.Dispose();
 

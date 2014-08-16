@@ -19,6 +19,7 @@ namespace EasyBinaryFile
 
         #region 属性
         public bool IsDisposed { get; private set; }
+        public long Length { get { return this._bufferStream.Seek(0, SeekOrigin.End); } }
         #endregion
 
         #region 构造
@@ -49,9 +50,10 @@ namespace EasyBinaryFile
         }
         #endregion
 
-        #region 方法
+        #region 读方法
         public byte[] Read(long startPosition, long endPosition)
         {
+            Preconditions.CheckDisposed(this.IsDisposed, this.GetType().Name);
             Preconditions.CheckLessZero(endPosition - startPosition, "endPosition - startPosition");
             Preconditions.CheckLessZero(endPosition, "endPosition");
             this.InitBufferStream();
@@ -68,6 +70,7 @@ namespace EasyBinaryFile
 
         public byte[] ReadOffset(long startPosition, int offset)
         {
+            Preconditions.CheckDisposed(this.IsDisposed, this.GetType().Name);
             Preconditions.CheckLessZero(startPosition, "startPosition");
             Preconditions.CheckLessZero(offset, "offset");
             this.InitBufferStream();
@@ -95,33 +98,49 @@ namespace EasyBinaryFile
             byte[] buffer = this.ReadOffset(startPosition, offset);
             return encoding.GetString(buffer);
         }
+        #endregion
 
-        public void Write(long startPosition, byte[] data)
+        #region 写方法
+        public void Write(long startPosition, byte[] buffer)
         {
+            Preconditions.CheckDisposed(this.IsDisposed, this.GetType().Name);
             Preconditions.CheckLessZero(startPosition, "startPosition");
-            Preconditions.CheckNotNull(data, "data");
+            Preconditions.CheckNotNull(buffer, "data");
 
             this.InitBufferStream();
             this._bufferStream.Seek(startPosition, SeekOrigin.Begin);
 
             this._binaryWriter = new BinaryWriter(this._bufferStream);
 
-            this._binaryWriter.Write(data);
+            this._binaryWriter.Write(buffer);
             this._binaryWriter.Flush();
         }
+
         public void Write(long startPosition, string content, Encoding encoding)
         {
+            Preconditions.CheckDisposed(this.IsDisposed, this.GetType().Name);
             Preconditions.CheckNotBlank(content, "content");
             Preconditions.CheckNotNull(encoding, "encoding");
 
             this.Write(startPosition, encoding.GetBytes(content));
+        }
+
+        public void Write(long startPosition, byte[] buffer, out long endPosition)
+        {
+            this.Write(startPosition, buffer);
+            endPosition = startPosition + buffer.Length;
+        }
+
+        public void Write(long startPosition, string content, Encoding encoding, out long endPosition)
+        {
+            this.Write(startPosition, content, encoding);
+            endPosition = startPosition + content.Length;
         }
         #endregion
 
         #region 私有方法
         private void InitBufferStream()
         {
-            Preconditions.CheckDisposed(this.IsDisposed, this.GetType().Name);
             this._bufferStream = new BufferedStream(this._fileStream, this._bufferSize);
         }
         #endregion
