@@ -14,34 +14,47 @@ namespace EasyBinaryFile.Reader
         private BufferedStream _bufferStream = null;
         private BinaryReader _binaryReader = null;
         private FileStream _fileStream = null;
-        private int _bufferSize = 4096000;
+        private int _bufferSize = 4096;
+        private SmartGzip gzip = new SmartGzip();
+        #endregion
+
+        #region 属性
+        public bool IsDisposed { get; private set; }
+        public bool EnableSmartGzip { get; private set; }
         #endregion
 
         #region 构造
-        public BinaryFileRead(BufferedStream bufferStream)
+        public BinaryFileRead(BufferedStream bufferStream, bool enableSmartGzip = true)
         {
             Preconditions.CheckNotNull(bufferStream, "bufferStream");
+
+            this.EnableSmartGzip = enableSmartGzip;
+
             this._bufferStream = bufferStream;
         }
 
-        public BinaryFileRead(FileStream fileStream, int bufferSize = 4096000)
+        public BinaryFileRead(FileStream fileStream, bool enableSmartGzip = true, int bufferSize = 4096)
         {
             Preconditions.CheckNotNull(fileStream, "fileStream");
             if (bufferSize < 4096)
                 bufferSize = 4096;
+
+            this.EnableSmartGzip = enableSmartGzip;
 
             this._fileStream = fileStream;
             this._bufferSize = bufferSize;
             this._bufferStream = new BufferedStream(this._fileStream, this._bufferSize);
         }
 
-        public BinaryFileRead(string path, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite, FileShare share = FileShare.None, int bufferSize = 4096000)
+        public BinaryFileRead(string path, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite, bool enableSmartGzip = true, int bufferSize = 4096)
         {
             Preconditions.CheckNotBlank(path, "path");
             if (!File.Exists(path))
                 mode = FileMode.OpenOrCreate;
             if (bufferSize < 4096)
                 bufferSize = 4096;
+
+            this.EnableSmartGzip = enableSmartGzip;
 
             this._fileStream = File.Open(path, mode, access, share);
             this._bufferSize = bufferSize;
@@ -64,9 +77,17 @@ namespace EasyBinaryFile.Reader
         }
         public string ReadString(long startPosition, long endPosition, Encoding encoding)
         {
+            Preconditions.CheckLessZero(startPosition, "startPosition");
+            Preconditions.CheckLessZero(endPosition - startPosition, "endPosition - startPosition");
+            Preconditions.CheckLessZero(endPosition, "endPosition");
             Preconditions.CheckNotNull(encoding, "encoding");
-            byte[] buffer = this.ReadByte(startPosition, endPosition);
-            return encoding.GetString(buffer);
+            var buffer = this.ReadByte(startPosition, endPosition);
+            var baseString = encoding.GetString(buffer);
+
+            if (this.EnableSmartGzip)
+                return gzip.GZipDecompressString(baseString, encoding);
+
+            return baseString;
         }
 
 
@@ -84,9 +105,16 @@ namespace EasyBinaryFile.Reader
         }
         public string ReadStringOffset(long startPosition, int offset, Encoding encoding)
         {
+            Preconditions.CheckLessZero(startPosition, "startPosition");
+            Preconditions.CheckLessZero(offset, "offset");
             Preconditions.CheckNotNull(encoding, "encoding");
-            byte[] buffer = this.ReadByteOffset(startPosition, offset);
-            return encoding.GetString(buffer);
+            var buffer = this.ReadByteOffset(startPosition, offset);
+            var baseString = encoding.GetString(buffer);
+
+            if (this.EnableSmartGzip)
+                return gzip.GZipDecompressString(baseString, encoding);
+
+            return baseString;
         }
 
 

@@ -17,15 +17,16 @@ namespace EasyBinaryFile
         private BinaryWriter _binaryWriter = null;
         private BinaryReader _binaryReader = null;
         private FileStream _fileStream = null;
-        private int _bufferSize = 4096000;
+        private int _bufferSize = 0;
         #endregion
 
         #region 属性
         public bool IsDisposed { get; private set; }
+        public bool EnableSmartGzip { get; private set; }
         #endregion
 
         #region 构造
-        public BinaryFile(FileStream fileStream, int bufferSize = 4096000)
+        public BinaryFile(FileStream fileStream, bool enableSmartGzip = true, int bufferSize = 4096)
         {
             Preconditions.CheckNotNull(fileStream, "fileStream");
             if (bufferSize < 4096)
@@ -34,10 +35,10 @@ namespace EasyBinaryFile
             this._fileStream = fileStream;
             this._bufferSize = bufferSize;
             this._bufferStream = new BufferedStream(this._fileStream, this._bufferSize);
-            this.IsDisposed = false;
+            this.EnableSmartGzip = enableSmartGzip;
         }
 
-        public BinaryFile(string path, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite, FileShare share = FileShare.None, int bufferSize = 4096000)
+        public BinaryFile(string path, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite, bool enableSmartGzip = true, int bufferSize = 4096)
         {
             Preconditions.CheckNotBlank(path, "path");
             if (!File.Exists(path))
@@ -48,7 +49,7 @@ namespace EasyBinaryFile
             this._fileStream = File.Open(path, mode, access, share);
             this._bufferSize = bufferSize;
             this._bufferStream = new BufferedStream(this._fileStream, this._bufferSize);
-            this.IsDisposed = false;
+            this.EnableSmartGzip = enableSmartGzip;
         }
         #endregion
 

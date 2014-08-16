@@ -46,7 +46,9 @@ namespace EasyBinaryFile.Utility
             if (!zippedString.StartsWith(gzipMark))
                 return zippedString;
 
-            byte[] zippedData = Convert.FromBase64String(zippedString.Remove(0, gzipMark.Length));
+            var base64String = zippedString.Remove(0, gzipMark.Length);
+
+            byte[] zippedData = Convert.FromBase64String(base64String);
             return encoding.GetString(DecompressRawData(zippedData));
         }
 

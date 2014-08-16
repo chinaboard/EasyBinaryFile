@@ -16,14 +16,22 @@ namespace EasyBinaryFile.Test
         }
         static void Test1()
         {
-
-            var ef = new BinaryFile("test.txt");
+            File.Delete("test.txt");
+            var ef = new BinaryFile("test.txt", FileShare.ReadWrite);
             var reader = ef.GetReader();
             var writer = ef.GetWriter();
 
-            writer.Write("1234567890");
-            Console.WriteLine(reader.ReadString());
+            Console.WriteLine(ef.EnableSmartGzip);
 
+            var smartText = "";
+            Random rand = new Random();
+            while (smartText.Length < 200)
+                smartText += rand.Next(16).ToString("x");
+
+            writer.Write(smartText);
+            //writer.Write(BitConverter.GetBytes(int.MinValue));
+            //Console.WriteLine(reader.ReadString() == smartText);
+            File.Delete("test.txt");
         }
     }
 }
