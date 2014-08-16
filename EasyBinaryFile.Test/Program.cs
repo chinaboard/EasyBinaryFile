@@ -32,9 +32,8 @@ namespace EasyBinaryFile.Test
             while (smartText.Length < 100000)
                 smartText += smartText;
 
-            var ef1 = new BinaryFile("zip.txt", FileShare.ReadWrite);
-            var ef2 = new BinaryFile("unzip.txt", FileShare.ReadWrite);
-            ef2.SwitchSmartGzip(false);
+            var ef1 = new BinaryFile("zip.txt", true, FileShare.ReadWrite);
+            var ef2 = new BinaryFile("unzip.txt", true, FileShare.ReadWrite);
             var reader1 = ef1.GetReader();
             var writer1 = ef1.GetWriter();
             var reader2 = ef2.GetReader();
