@@ -45,6 +45,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EasyBinaryFile.Utility\EasyBinaryFile.Utility.csproj">
+      <Project>{68387487-34c8-4deb-b6f1-22d8c8a45b96}</Project>
+      <Name>EasyBinaryFile.Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EasyBinaryFile\EasyBinaryFile.csproj">
       <Project>{171f2398-76ee-4b4b-a698-5f938122fa81}</Project>
       <Name>EasyBinaryFile</Name>

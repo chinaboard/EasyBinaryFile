@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace EasyBinaryFile
+namespace EasyBinaryFile.Utility
 {
-    internal static class Preconditions
+    public static class Preconditions
     {
         public static void CheckNotNull<T>(T value, string name) where T : class
         {
