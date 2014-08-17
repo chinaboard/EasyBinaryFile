@@ -16,7 +16,6 @@ namespace EasyBinaryFile.Reader
         private FileStream _fileStream = null;
         private int _bufferSize = 4096;
         private SmartGzip _gzip = new SmartGzip();
-        private BinaryReader _baseReader = null;
         #endregion
 
         #region 属性

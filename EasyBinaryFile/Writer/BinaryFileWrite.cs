@@ -16,8 +16,6 @@ namespace EasyBinaryFile.Writer
         private FileStream _fileStream = null;
         private int _bufferSize = 4096;
         private SmartGzip _gzip = new SmartGzip();
-        private BinaryWriter _baseWriter = null;
-
         #endregion
 
         #region 属性
