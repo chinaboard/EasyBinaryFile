@@ -1,4 +1,4 @@
-EasyBinaryFile
+﻿EasyBinaryFile
 ==============
 [![Build status](https://ci.appveyor.com/api/github/webhook?id=hu87xq6bdcxuvvtr)](https://ci.appveyor.com/project/chinaboard/easybinaryfile)
 

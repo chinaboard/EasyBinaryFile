@@ -37,6 +37,10 @@ namespace EasyBinaryFile.Test
 
             while (smartText.Length < 1000000)
                 smartText += smartText;
+            Console.WriteLine("Test1  Start");
+            Console.WriteLine("String.Length = " + smartText.Length);
+
+            Console.WriteLine("-------zip--------");
 
             var ef1 = new BinaryFile("zip.txt", true, FileShare.ReadWrite);
             var ef2 = new BinaryFile("unzip.txt", false, FileShare.ReadWrite);
@@ -44,7 +48,6 @@ namespace EasyBinaryFile.Test
             var writer1 = ef1.GetWriter();
             var reader2 = ef2.GetReader();
             var writer2 = ef2.GetWriter();
-            Console.WriteLine("zip test result");
             Console.WriteLine("SmartGzip : " + ef1.EnableSmartGzip);
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -55,9 +58,9 @@ namespace EasyBinaryFile.Test
             Console.WriteLine("zip Time : " + sw.ElapsedMilliseconds + "ms");
             Console.WriteLine("zip Size : " + writer1.BaseWriter.BaseStream.Seek(0, SeekOrigin.End) / 1024 + "KB");
 
+            Console.WriteLine("-------zip--------");
             Console.WriteLine();
-
-            Console.WriteLine("unzip test result");
+            Console.WriteLine("------unzip-------");
             Console.WriteLine("SmartGzip : " + ef2.EnableSmartGzip);
             sw.Reset();
             sw.Start();
@@ -73,20 +76,22 @@ namespace EasyBinaryFile.Test
 
             File.Delete("zip.txt");
             File.Delete("unzip.txt");
+            Console.WriteLine("------unzip-------");
+            Console.WriteLine("Test1  End");
 
         }
 
         static void Test2()
         {
             //unzip disk IO test
-            File.Delete(@"z:\unzip.dta");
+            File.Delete(@"test.dta");
             Stopwatch sw = new Stopwatch();
             Random rand = new Random();
             long result = 0;
             long result1 = 0;
 
 
-            var ef = new BinaryFile(@"z:\unzip.dta", false);
+            var ef = new BinaryFile(@"test.dta", false);
             var writer = ef.GetWriter();
             var reader = ef.GetReader();
             Console.WriteLine("SmartGzip : " + ef.EnableSmartGzip);
@@ -116,7 +121,6 @@ namespace EasyBinaryFile.Test
             sw.Stop();
             Console.WriteLine("read : " + sw.ElapsedMilliseconds + "ms");
             Console.WriteLine("read : " + (Count / sw.ElapsedMilliseconds + " IOPS"));
-            Console.WriteLine();
             Console.WriteLine("write = read : " + (result1 == result));
         }
     }
