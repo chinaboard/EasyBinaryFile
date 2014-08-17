@@ -166,7 +166,7 @@ namespace EasyBinaryFile.Writer
             Preconditions.CheckNotNull(encoding, "encoding");
 
 
-            if (this.EnableSmartGzip)
+            if (content.Length > 100000 && this.EnableSmartGzip)
                 content = gzip.GZipCompressString(content, encoding);
 
             this.Write(startPosition, encoding.GetBytes(content));

@@ -29,7 +29,7 @@ namespace EasyBinaryFile.Test
             while (smartText.Length < 10000)
                 smartText += rand.Next(16).ToString("x");
 
-            while (smartText.Length < 10000000)
+            while (smartText.Length < 1000000)
                 smartText += smartText;
 
             var ef1 = new BinaryFile("zip.txt", true, FileShare.ReadWrite);
