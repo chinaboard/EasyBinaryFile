@@ -15,8 +15,9 @@ namespace EasyBinaryFile.Writer
         private BinaryWriter _binaryWriter = null;
         private FileStream _fileStream = null;
         private int _bufferSize = 4096;
-        private SmartGzip gzip = new SmartGzip();
-        private long fileEndPosition { get { return this._bufferStream.Seek(0, SeekOrigin.End); } }
+        private SmartGzip _gzip = new SmartGzip();
+        private BinaryWriter _baseWriter = null;
+
         #endregion
 
         #region 属性
@@ -31,7 +32,15 @@ namespace EasyBinaryFile.Writer
         /// <summary>
         /// 基础二进制写入流
         /// </summary>
-        public BinaryWriter BaseWriter { get { return this._binaryWriter; } }
+        public BinaryWriter BaseWriter { get { return new BinaryWriter(this._bufferStream); } }
+        /// <summary>
+        /// 获取或设置当前流中的位置
+        /// </summary>
+        public long Position { get { return this._bufferStream.Position; } set { this._bufferStream.Position = value; } }
+        /// <summary>
+        /// 获取用字节表示的流长度
+        /// </summary>
+        public long Length { get { return this._bufferStream.Length; } }
         #endregion
 
         #region 构造
@@ -78,7 +87,7 @@ namespace EasyBinaryFile.Writer
         /// <param name="access">文件控制方式</param>
         /// <param name="enableSmartGzip">是否开启字符串智能压缩</param>
         /// <param name="bufferSize">缓冲区大小</param>
-        public BinaryFileWrite(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite, int bufferSize = 4096)
+        public BinaryFileWrite(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Write, int bufferSize = 4096)
         {
             Preconditions.CheckNotBlank(path, "path");
             if (!File.Exists(path))
@@ -111,7 +120,7 @@ namespace EasyBinaryFile.Writer
         /// <param name="encoding">编码</param>
         public virtual void Write(string content, Encoding encoding)
         {
-            this.Write(this.fileEndPosition, content, encoding);
+            this.Write(this.Length, content, encoding);
         }
         /// <summary>
         /// 向当前流中写入字节序列，并将此流中的当前位置提升写入的字节数
@@ -119,7 +128,7 @@ namespace EasyBinaryFile.Writer
         /// <param name="value">字节数组。此方法将value写入到当前流末尾</param>
         public virtual void Write(byte[] value)
         {
-            this.Write(this.fileEndPosition, value);
+            this.Write(this.Length, value);
         }
 
 
@@ -167,7 +176,7 @@ namespace EasyBinaryFile.Writer
 
 
             if (content.Length > 100000 && this.EnableSmartGzip)
-                content = gzip.GZipCompressString(content, encoding);
+                content = _gzip.GZipCompressString(content, encoding);
 
             this.Write(startPosition, encoding.GetBytes(content));
         }

@@ -21,8 +21,22 @@ namespace EasyBinaryFile
         #endregion
 
         #region 属性
+        /// <summary>
+        /// 对象是否已释放
+        /// </summary>
         public bool IsDisposed { get; private set; }
+        /// <summary>
+        /// 是否开启字符串智能压缩
+        /// </summary>
         public bool EnableSmartGzip { get; private set; }
+        /// <summary>
+        /// 获取或设置当前流中的位置
+        /// </summary>
+        public long Position { get { return this._bufferStream.Position; } set { this._bufferStream.Position = value; } }
+        /// <summary>
+        /// 获取用字节表示的流长度
+        /// </summary>
+        public long Length { get { return this._bufferStream.Length; } }
         #endregion
 
         #region 构造
@@ -38,7 +52,7 @@ namespace EasyBinaryFile
             this.EnableSmartGzip = enableSmartGzip;
         }
 
-        public BinaryFile(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite, int bufferSize = 4096)
+        public BinaryFile(string path, bool enableSmartGzip = true, FileShare share = FileShare.ReadWrite, FileMode mode = FileMode.OpenOrCreate, FileAccess access = FileAccess.ReadWrite, int bufferSize = 4096)
         {
             Preconditions.CheckNotBlank(path, "path");
             if (!File.Exists(path))
@@ -65,7 +79,6 @@ namespace EasyBinaryFile
             return new BinaryFileWrite(this._bufferStream, this.EnableSmartGzip);
         }
         #endregion
-
 
         #region Dispose
         public void Dispose()

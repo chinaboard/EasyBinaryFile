@@ -15,8 +15,8 @@ namespace EasyBinaryFile.Reader
         private BinaryReader _binaryReader = null;
         private FileStream _fileStream = null;
         private int _bufferSize = 4096;
-        private SmartGzip gzip = new SmartGzip();
-        private long fileEndPosition { get { return this._bufferStream.Seek(0, SeekOrigin.End); } }
+        private SmartGzip _gzip = new SmartGzip();
+        private BinaryReader _baseReader = null;
         #endregion
 
         #region 属性
@@ -31,7 +31,15 @@ namespace EasyBinaryFile.Reader
         /// <summary>
         /// 基础二进制读取流
         /// </summary>
-        public BinaryReader BaseReader { get { return this._binaryReader; } }
+        public BinaryReader BaseReader { get { return new BinaryReader(this._bufferStream); } }
+        /// <summary>
+        /// 获取或设置当前流中的位置
+        /// </summary>
+        public long Position { get { return this._bufferStream.Position; } set { this._bufferStream.Position = value; } }
+        /// <summary>
+        /// 获取用字节表示的流长度
+        /// </summary>
+        public long Length { get { return this._bufferStream.Length; } }
         #endregion
 
         #region 构造
@@ -78,7 +86,7 @@ namespace EasyBinaryFile.Reader
         /// <param name="access">文件控制方式</param>
         /// <param name="enableSmartGzip">是否开启字符串智能压缩</param>
         /// <param name="bufferSize">缓冲区大小</param>
-        public BinaryFileRead(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.ReadWrite, int bufferSize = 4096)
+        public BinaryFileRead(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Read, int bufferSize = 4096)
         {
             Preconditions.CheckNotBlank(path, "path");
             if (!File.Exists(path))
@@ -120,7 +128,7 @@ namespace EasyBinaryFile.Reader
         /// <returns>字符串</returns>
         public virtual string ReadString(Encoding encoding)
         {
-            return this.ReadString(0, this.fileEndPosition, encoding);
+            return this.ReadString(0, this.Length, encoding);
         }
         /// <summary>
         /// 读取缓冲区的指定位置内容到字符串
@@ -139,7 +147,7 @@ namespace EasyBinaryFile.Reader
             var baseString = encoding.GetString(buffer);
 
             if (this.EnableSmartGzip)
-                return gzip.GZipDecompressString(baseString, encoding);
+                return _gzip.GZipDecompressString(baseString, encoding);
 
             return baseString;
         }
@@ -190,7 +198,7 @@ namespace EasyBinaryFile.Reader
             var baseString = encoding.GetString(buffer);
 
             if (this.EnableSmartGzip)
-                return gzip.GZipDecompressString(baseString, encoding);
+                return _gzip.GZipDecompressString(baseString, encoding);
 
             return baseString;
         }

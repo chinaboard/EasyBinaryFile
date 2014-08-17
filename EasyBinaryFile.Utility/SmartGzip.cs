@@ -9,15 +9,29 @@ namespace EasyBinaryFile.Utility
 {
     public class SmartGzip
     {
-        private const string gzipMark = "@@zip@@";
 
+        #region 字段
+        private const string gzipMark = "@@zip@@";
+        #endregion
+
+        #region 方法
+        /// <summary>
+        /// 压缩字符串并以Base64编码
+        /// </summary>
+        /// <param name="rawString">字符串</param>
+        /// <returns>Base64字符串</returns>
         public string GZipCompressString(string rawString)
         {
             Preconditions.CheckNotBlank(rawString, "rawString");
 
             return GZipCompressString(rawString, Encoding.UTF8);
         }
-
+        /// <summary>
+        /// 以指定编码方式压缩字符串并以Base64编码
+        /// </summary>
+        /// <param name="rawString">字符串</param>
+        /// <param name="encoding">编码</param>
+        /// <returns>Base64字符串</returns>
         public string GZipCompressString(string rawString, Encoding encoding)
         {
             Preconditions.CheckNotBlank(rawString, "rawString");
@@ -30,14 +44,23 @@ namespace EasyBinaryFile.Utility
 
             return zippedBase64String.Length < rawString.Length ? zippedBase64String : rawString;
         }
-
+        /// <summary>
+        /// 解压缩Base64字符串
+        /// </summary>
+        /// <param name="zippedString">Base64字符串</param>
+        /// <returns>字符串</returns>
         public string GZipDecompressString(string zippedString)
         {
             Preconditions.CheckNotBlank(zippedString, "zippedString");
 
             return GZipDecompressString(zippedString, Encoding.UTF8);
         }
-
+        /// <summary>
+        /// 以指定编码方式解压缩Base64字符串
+        /// </summary>
+        /// <param name="zippedString">Base64字符串</param>
+        /// <param name="encoding">编码</param>
+        /// <returns>字符串</returns>
         public string GZipDecompressString(string zippedString, Encoding encoding)
         {
             Preconditions.CheckNotBlank(zippedString, "zippedString");
@@ -51,7 +74,14 @@ namespace EasyBinaryFile.Utility
             byte[] zippedData = Convert.FromBase64String(base64String);
             return encoding.GetString(DecompressRawData(zippedData));
         }
+        #endregion
 
+        #region 私有方法
+        /// <summary>
+        /// 压缩原始字节序列
+        /// </summary>
+        /// <param name="rawData">原始数据</param>
+        /// <returns>压缩后的数据</returns>
         private byte[] CompressRawData(byte[] rawData)
         {
             Preconditions.CheckNotNull(rawData, "rawData");
@@ -62,7 +92,11 @@ namespace EasyBinaryFile.Utility
             compressedzipStream.Close();
             return ms.ToArray();
         }
-
+        /// <summary>
+        /// 解压缩原始字节序列
+        /// </summary>
+        /// <param name="zippedData">压缩后的数据</param>
+        /// <returns>原始数据</returns>
         private byte[] DecompressRawData(byte[] zippedData)
         {
             Preconditions.CheckNotNull(zippedData, "zippedData");
@@ -82,5 +116,7 @@ namespace EasyBinaryFile.Utility
             compressedzipStream.Close();
             return outBuffer.ToArray();
         }
+        #endregion
+
     }
 }
