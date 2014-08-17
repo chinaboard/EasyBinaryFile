@@ -3,7 +3,8 @@ EasyBinaryFile
 
 [![Build status](https://ci.appveyor.com/api/projects/status/hu87xq6bdcxuvvtr)](https://ci.appveyor.com/project/chinaboard/easybinaryfile)
 
-_本项目不适用于生产环境，但是我自己的项目都在使用该库。目前并将长期处于alpha或beta版，并且API部分可能随时会发生变动。_
+本项目不适用于生产环境，但是我自己的项目都在使用该库。
+该项目将长期处于alpha状态，并且API部分可能随时会发生变动。
 
 
 字符串压缩率测试
@@ -32,3 +33,4 @@ read : 17ms
 read : 5882 IOPS
 
 write = read : True
+
