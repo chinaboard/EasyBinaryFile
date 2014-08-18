@@ -19,18 +19,3 @@ zip Size : 19KB
 unzip Time : 5ms
 
 unzip Size : 1250KB
-
-
-
-int型读取写入测试
-
-Count : 100000
-
-write : 368ms
-
-write : 271 IOPS
-
-read : 17ms
-
-read : 5882 IOPS
-

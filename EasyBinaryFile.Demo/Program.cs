@@ -10,14 +10,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EasyBinaryFile.Test
+namespace EasyBinaryFile.Demo
 {
     class Program
     {
-        private const int Count = 100000;
         static void Main(string[] args)
         {
-            Test1();
+            //Test1();
             Console.WriteLine();
             Test2();
             Console.ReadLine();
@@ -84,44 +83,44 @@ namespace EasyBinaryFile.Test
         static void Test2()
         {
             //unzip disk IO test
-            File.Delete(@"test.dta");
+            File.Delete(@"z:\test.dta");
             Stopwatch sw = new Stopwatch();
-            Random rand = new Random();
-            long result = 0;
-            long result1 = 0;
 
+            const int Count = 100;
 
-            var ef = new BinaryFile(@"test.dta", false);
+            var ef = new BinaryFile(@"z:\test.dta", true);
             var writer = ef.GetWriter();
             var reader = ef.GetReader();
             Console.WriteLine("SmartGzip : " + ef.EnableSmartGzip);
             Console.WriteLine("Count : " + Count);
 
-
+            string str = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest";
+            str += str; str += str; str += str; str += str; str += str; str += str;
+            str += str; str += str; str += str; str += str; str += str; str += str;
+            long length =123;
             sw.Start();
             for (int i = 0; i < Count; i++)
             {
-                var num = rand.Next();
-                result += num;
-                writer.Write(num);
+                writer.Write(0, str, out length);
             }
             sw.Stop();
             Console.WriteLine("write : " + sw.ElapsedMilliseconds + "ms");
-            Console.WriteLine("write : " + (Count / sw.ElapsedMilliseconds + " IOPS"));
+            Console.WriteLine("write : " + (Count / (sw.ElapsedMilliseconds + 1) * length + " KB/s"));
             sw.Restart();
             reader.Position = 0;
 
+            string n = string.Empty;
             for (int i = 0; i < Count; i++)
             {
-                int n = reader.BaseReader.ReadInt32();
-                result1 += n;
+                n = reader.ReadString(0, length);
             }
-
-            ef.Dispose();
             sw.Stop();
+            ef.Dispose();
+
             Console.WriteLine("read : " + sw.ElapsedMilliseconds + "ms");
-            Console.WriteLine("read : " + (Count / sw.ElapsedMilliseconds + " IOPS"));
-            Console.WriteLine("write = read : " + (result1 == result));
+            Console.WriteLine("read : " + (Count / (sw.ElapsedMilliseconds + 1) * length + " KB/s"));
+
+            Console.WriteLine(str.Length * Count / 1024 + "KB");
         }
     }
 }

@@ -159,7 +159,7 @@ namespace EasyBinaryFile.Writer
         public virtual void Write(long startPosition, string content, Encoding encoding, out long endPosition)
         {
             this.Write(startPosition, content, encoding);
-            endPosition = startPosition + content.Length;
+            endPosition = this.Position;
         }
         /// <summary>
         /// 从指定起始位置，向当前流中写入字符串，并将此流中的当前位置提升写入的字节数
