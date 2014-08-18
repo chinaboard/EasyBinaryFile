@@ -14,8 +14,8 @@ namespace EasyBinaryFile.Utility
 
         public static void CheckNotNull<T>(T value, string name, string message) where T : class
         {
-            CheckNotBlank(name, "name", "name must not be blank");
-            CheckNotBlank(message, "message", "message must not be blank");
+            CheckNotBlankOrWhiteSpace(name, "name", "name must not be blank");
+            CheckNotBlankOrWhiteSpace(message, "message", "message must not be blank");
 
             if (value == null)
             {
@@ -35,7 +35,7 @@ namespace EasyBinaryFile.Utility
                 throw new ArgumentException("message must not be blank", "message");
             }
 
-            if (string.IsNullOrWhiteSpace(value))
+            if (string.IsNullOrEmpty(value))
             {
                 throw new ArgumentException(message, name);
             }
@@ -46,10 +46,33 @@ namespace EasyBinaryFile.Utility
             CheckNotBlank(value, name, string.Format("{0} must not be blank", name));
         }
 
+        public static void CheckNotBlankOrWhiteSpace(string value, string name, string message)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentException("name must not be blank", "name");
+            }
+
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                throw new ArgumentException("message must not be blank", "message");
+            }
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException(message, name);
+            }
+        }
+
+        public static void CheckNotBlankOrWhiteSpace(string value, string name)
+        {
+            CheckNotBlankOrWhiteSpace(value, name, string.Format("{0} must not be blank", name));
+        }
+
         public static void CheckAny<T>(IEnumerable<T> collection, string name, string message)
         {
-            CheckNotBlank(name, "name", "name must not be blank");
-            CheckNotBlank(message, "message", "message must not be blank");
+            CheckNotBlankOrWhiteSpace(name, "name", "name must not be blank");
+            CheckNotBlankOrWhiteSpace(message, "message", "message must not be blank");
 
             if (collection == null || !collection.Any())
             {
@@ -59,8 +82,8 @@ namespace EasyBinaryFile.Utility
 
         public static void CheckTrue(bool value, string name, string message)
         {
-            CheckNotBlank(name, "name", "name must not be blank");
-            CheckNotBlank(message, "message", "message must not be blank");
+            CheckNotBlankOrWhiteSpace(name, "name", "name must not be blank");
+            CheckNotBlankOrWhiteSpace(message, "message", "message must not be blank");
 
             if (!value)
             {
@@ -70,8 +93,8 @@ namespace EasyBinaryFile.Utility
 
         public static void CheckFalse(bool value, string name, string message)
         {
-            CheckNotBlank(name, "name", "name must not be blank");
-            CheckNotBlank(message, "message", "message must not be blank");
+            CheckNotBlankOrWhiteSpace(name, "name", "name must not be blank");
+            CheckNotBlankOrWhiteSpace(message, "message", "message must not be blank");
 
             if (value)
             {
@@ -90,8 +113,8 @@ namespace EasyBinaryFile.Utility
 
         public static void CheckTypeMatches(Type expectedType, object value, string name, string message)
         {
-            CheckNotBlank(name, "name", "name must not be blank");
-            CheckNotBlank(message, "message", "message must not be blank");
+            CheckNotBlankOrWhiteSpace(name, "name", "name must not be blank");
+            CheckNotBlankOrWhiteSpace(message, "message", "message must not be blank");
             if (!expectedType.IsAssignableFrom(value.GetType()))
             {
                 throw new ArgumentException(message, name);
@@ -107,25 +130,25 @@ namespace EasyBinaryFile.Utility
 
         public static void CheckLessZero(short value, string name)
         {
-            CheckNotBlank(name, "name", "name must not be blank");
+            CheckNotBlankOrWhiteSpace(name, "name", "name must not be blank");
             if (value < 0)
                 throw new ArgumentOutOfRangeException(name, string.Format("Arguments {0} must not be less than 0", name));
         }
         public static void CheckLessZero(int value, string name)
         {
-            CheckNotBlank(name, "name", "name must not be blank");
+            CheckNotBlankOrWhiteSpace(name, "name", "name must not be blank");
             if (value < 0)
                 throw new ArgumentOutOfRangeException(name, string.Format("Arguments {0} must not be less than 0", name));
         }
         public static void CheckLessZero(long value, string name)
         {
-            CheckNotBlank(name, "name", "name must not be blank");
+            CheckNotBlankOrWhiteSpace(name, "name", "name must not be blank");
             if (value < 0)
                 throw new ArgumentOutOfRangeException(name, string.Format("Arguments {0} must not be less than 0", name));
         }
         public static void CheckLessZero(decimal value, string name)
         {
-            CheckNotBlank(name, "name", "name must not be blank");
+            CheckNotBlankOrWhiteSpace(name, "name", "name must not be blank");
             if (value < 0)
                 throw new ArgumentOutOfRangeException(name, string.Format("Arguments {0} must not be less than 0", name));
         }

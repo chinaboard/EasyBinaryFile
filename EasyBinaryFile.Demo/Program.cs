@@ -94,7 +94,8 @@ namespace EasyBinaryFile.Demo
             Console.WriteLine("SmartGzip : " + ef.EnableSmartGzip);
             Console.WriteLine("Count : " + Count);
 
-            string str = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest";
+            var str = "                                                                                                          ";
+            //string str = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest";
             str += str; str += str; str += str; str += str; str += str; str += str;
             str += str; str += str; str += str; str += str; str += str; str += str;
             long length =123;
@@ -119,7 +120,8 @@ namespace EasyBinaryFile.Demo
 
             Console.WriteLine("read : " + sw.ElapsedMilliseconds + "ms");
             Console.WriteLine("read : " + (Count / (sw.ElapsedMilliseconds + 1) * length + " KB/s"));
-
+            Console.WriteLine(length);
+            Console.WriteLine(length * Count / 1024 + "KB");
             Console.WriteLine(str.Length * Count / 1024 + "KB");
         }
     }
