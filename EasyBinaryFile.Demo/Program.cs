@@ -16,9 +16,9 @@ namespace EasyBinaryFile.Demo
     {
         static void Main(string[] args)
         {
-            //Test1();
+            Test1();
             Console.WriteLine();
-            Test2();
+            //Test2();
             Console.ReadLine();
         }
         static void Test1()

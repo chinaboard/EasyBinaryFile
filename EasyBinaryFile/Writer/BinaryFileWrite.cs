@@ -10,14 +10,6 @@ namespace EasyBinaryFile.Writer
     public class BinaryFileWrite : IBinaryFileWrite, IDisposable
     {
 
-        #region 字段
-        private BufferedStream _bufferStream = null;
-        private BinaryWriter _binaryWriter = null;
-        private FileStream _fileStream = null;
-        private int _bufferSize = 4096;
-        private SmartGzip _gzip = new SmartGzip();
-        #endregion
-
         #region 属性
         /// <summary>
         /// 对象是否已释放
@@ -107,7 +99,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入字符串，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="content">字符串。此方法将content写入到当前流末尾</param>
-        public virtual void Write(string content)
+        public override void Write(string content)
         {
             this.Write(content, Encoding.UTF8);
         }
@@ -116,7 +108,7 @@ namespace EasyBinaryFile.Writer
         /// </summary>
         /// <param name="content">字符串。此方法将content写入到当前流末尾</param>
         /// <param name="encoding">编码</param>
-        public virtual void Write(string content, Encoding encoding)
+        public override void Write(string content, Encoding encoding)
         {
             this.Write(this.Length, content, encoding);
         }
@@ -124,7 +116,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入字节序列，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">字节数组。此方法将value写入到当前流末尾</param>
-        public virtual void Write(byte[] value)
+        public override void Write(byte[] value)
         {
             this.Write(this.Length, value);
         }
@@ -135,7 +127,7 @@ namespace EasyBinaryFile.Writer
         /// </summary>
         /// <param name="startPosition">起始位置</param>
         /// <param name="content">字符串。此方法将content写入指定位置之后</param>
-        public virtual void Write(long startPosition, string content)
+        public override void Write(long startPosition, string content)
         {
             this.Write(startPosition, content, Encoding.UTF8);
         }
@@ -145,7 +137,7 @@ namespace EasyBinaryFile.Writer
         /// <param name="startPosition">起始位置</param>
         /// <param name="content">字符串。此方法将content写入指定位置之后</param>
         /// <param name="endPosition">末尾位置</param>
-        public virtual void Write(long startPosition, string content, out long endPosition)
+        public override void Write(long startPosition, string content, out long endPosition)
         {
             this.Write(startPosition, content, Encoding.UTF8, out endPosition);
         }
@@ -156,7 +148,7 @@ namespace EasyBinaryFile.Writer
         /// <param name="content">字符串。此方法将content写入指定位置之后</param>
         /// <param name="encoding">编码</param>
         /// <param name="endPosition">末尾位置</param>
-        public virtual void Write(long startPosition, string content, Encoding encoding, out long endPosition)
+        public override void Write(long startPosition, string content, Encoding encoding, out long endPosition)
         {
             this.Write(startPosition, content, encoding);
             endPosition = this.Position;
@@ -167,7 +159,7 @@ namespace EasyBinaryFile.Writer
         /// <param name="startPosition">起始位置</param>
         /// <param name="content">字符串。此方法将content写入指定位置之后</param>
         /// <param name="encoding">编码</param>
-        public virtual void Write(long startPosition, string content, Encoding encoding)
+        public override void Write(long startPosition, string content, Encoding encoding)
         {
             Preconditions.CheckNotBlank(content, "content");
             Preconditions.CheckNotNull(encoding, "encoding");
@@ -186,7 +178,7 @@ namespace EasyBinaryFile.Writer
         /// <param name="startPosition">起始位置</param>
         /// <param name="value">字节数组。此方法将value写入到当前流末尾</param>
         /// <param name="endPosition">末尾位置</param>
-        public virtual void Write(long startPosition, byte[] value, out long endPosition)
+        public override void Write(long startPosition, byte[] value, out long endPosition)
         {
             this.Write(startPosition, value);
             endPosition = startPosition + value.Length;
@@ -196,7 +188,7 @@ namespace EasyBinaryFile.Writer
         /// </summary>
         /// <param name="startPosition">起始位置</param>
         /// <param name="value">字节数组。此方法将value写入到当前流末尾</param>
-        public virtual void Write(long startPosition, byte[] value)
+        public override void Write(long startPosition, byte[] value)
         {
             Preconditions.CheckLessZero(startPosition, "startPosition");
             Preconditions.CheckNotNull(value, "data");
@@ -214,7 +206,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入布尔型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">布尔型</param>
-        public virtual void Write(bool value)
+        public override void Write(bool value)
         {
             this.Write(BitConverter.GetBytes(value));
         }
@@ -222,7 +214,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入字符型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">字符型</param>
-        public virtual void Write(char value)
+        public override void Write(char value)
         {
             this.Write(BitConverter.GetBytes(value));
         }
@@ -230,7 +222,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入双精度浮点型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">双精度浮点型</param>
-        public virtual void Write(double value)
+        public override void Write(double value)
         {
             this.Write(BitConverter.GetBytes(value));
         }
@@ -238,7 +230,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入浮点型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">浮点型</param>
-        public virtual void Write(float value)
+        public override void Write(float value)
         {
             this.Write(BitConverter.GetBytes(value));
         }
@@ -246,7 +238,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入整型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">整型</param>
-        public virtual void Write(int value)
+        public override void Write(int value)
         {
             this.Write(BitConverter.GetBytes(value));
         }
@@ -254,7 +246,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入长整型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">长整型</param>
-        public virtual void Write(long value)
+        public override void Write(long value)
         {
             this.Write(BitConverter.GetBytes(value));
         }
@@ -262,7 +254,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入短整型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">短整型</param>
-        public virtual void Write(short value)
+        public override void Write(short value)
         {
             this.Write(BitConverter.GetBytes(value));
         }
@@ -270,7 +262,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入无符号整型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">无符号整型</param>
-        public virtual void Write(uint value)
+        public override void Write(uint value)
         {
             this.Write(BitConverter.GetBytes(value));
         }
@@ -278,7 +270,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入无符号长整型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">无符号长整型</param>
-        public virtual void Write(ulong value)
+        public override void Write(ulong value)
         {
             this.Write(BitConverter.GetBytes(value));
         }
@@ -286,7 +278,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入无符号短整型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">无符号短整型</param>
-        public virtual void Write(ushort value)
+        public override void Write(ushort value)
         {
             this.Write(BitConverter.GetBytes(value));
         }
@@ -294,7 +286,7 @@ namespace EasyBinaryFile.Writer
         /// 向当前流中写入一个字节，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">要写入的字节</param>
-        public virtual void Write(byte value)
+        public override void Write(byte value)
         {
             this.Write(new byte[] { value });
         }
