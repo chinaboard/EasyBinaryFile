@@ -41,11 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BF\AbstractBaseBinaryFile.cs" />
     <Compile Include="BinaryFile.cs" />
-    <Compile Include="Reader\BinaryFileRead.cs" />
-    <Compile Include="Writer\BinaryFileWrite.cs" />
-    <Compile Include="Reader\IBinaryFileRead.cs" />
-    <Compile Include="Writer\IBinaryFileWrite.cs" />
+    <Compile Include="BF\BinaryFileRead.cs" />
+    <Compile Include="BF\BinaryFileWrite.cs" />
+    <Compile Include="BF\AbstractBinaryFileRead.cs" />
+    <Compile Include="BF\AbstractBinaryFileWrite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

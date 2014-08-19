@@ -5,33 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace EasyBinaryFile.Reader
+namespace EasyBinaryFile.BF
 {
-    public class BinaryFileRead : IBinaryFileRead, IDisposable
+    public class BinaryFileRead : AbstractBinaryFileRead, IDisposable
     {
-
-        #region 属性
-        /// <summary>
-        /// 对象是否已释放
-        /// </summary>
-        public bool IsDisposed { get; private set; }
-        /// <summary>
-        /// 是否开启字符串智能压缩
-        /// </summary>
-        public bool EnableSmartGzip { get; private set; }
-        /// <summary>
-        /// 基础二进制读取流
-        /// </summary>
-        public BinaryReader BaseReader { get { return new BinaryReader(this._bufferStream); } }
-        /// <summary>
-        /// 获取或设置当前流中的位置
-        /// </summary>
-        public long Position { get { return this._bufferStream.Position; } set { this._bufferStream.Position = value; } }
-        /// <summary>
-        /// 获取用字节表示的流长度
-        /// </summary>
-        public long Length { get { return this._bufferStream.Length; } }
-        #endregion
 
         #region 构造
         /// <summary>
@@ -39,16 +16,9 @@ namespace EasyBinaryFile.Reader
         /// </summary>
         /// <param name="bufferStream">BufferStream</param>
         /// <param name="enableSmartGzip">是否开启字符串智能压缩</param>
-        public BinaryFileRead(BufferedStream bufferStream, bool enableSmartGzip = true, int bufferSize = 4096)
+        public BinaryFileRead(BufferedStream bufferStream, bool enableSmartGzip = true)
+            : base(bufferStream, enableSmartGzip)
         {
-            Preconditions.CheckNotNull(bufferStream, "bufferStream");
-            if (bufferSize < 4096)
-                bufferSize = 4096;
-
-            this.EnableSmartGzip = enableSmartGzip;
-
-            this._bufferSize = bufferSize;
-            this._bufferStream = bufferStream;
         }
         /// <summary>
         /// 构造方法
@@ -57,16 +27,8 @@ namespace EasyBinaryFile.Reader
         /// <param name="enableSmartGzip">是否开启字符串智能压缩</param>
         /// <param name="bufferSize">缓冲区大小</param>
         public BinaryFileRead(FileStream fileStream, bool enableSmartGzip = true, int bufferSize = 4096)
+            : base(fileStream, enableSmartGzip, bufferSize)
         {
-            Preconditions.CheckNotNull(fileStream, "fileStream");
-            if (bufferSize < 4096)
-                bufferSize = 4096;
-
-            this.EnableSmartGzip = enableSmartGzip;
-
-            this._fileStream = fileStream;
-            this._bufferSize = bufferSize;
-            this._bufferStream = new BufferedStream(this._fileStream, this._bufferSize);
         }
         /// <summary>
         /// 构造方法
@@ -78,18 +40,8 @@ namespace EasyBinaryFile.Reader
         /// <param name="enableSmartGzip">是否开启字符串智能压缩</param>
         /// <param name="bufferSize">缓冲区大小</param>
         public BinaryFileRead(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Read, int bufferSize = 4096)
+            : base(path, enableSmartGzip, share, mode, access, bufferSize)
         {
-            Preconditions.CheckNotBlank(path, "path");
-            if (!File.Exists(path))
-                mode = FileMode.OpenOrCreate;
-            if (bufferSize < 4096)
-                bufferSize = 4096;
-
-            this.EnableSmartGzip = enableSmartGzip;
-
-            this._fileStream = File.Open(path, mode, access, share);
-            this._bufferSize = bufferSize;
-            this._bufferStream = new BufferedStream(this._fileStream, this._bufferSize);
         }
         #endregion
 
@@ -145,47 +97,47 @@ namespace EasyBinaryFile.Reader
 
 
         /// <summary>
-        /// 读取缓冲区起始位到指定偏移位的内容到字符串
+        /// 读取缓冲区指定起始位到要读取的字符数到字符串
         /// </summary>
-        /// <param name="offset">偏移量</param>
+        /// <param name="count">要读取的字符数</param>
         /// <returns>字符串</returns>
-        public override string ReadStringOffset(int offset)
+        public override string ReadStringOffset(int count)
         {
-            return this.ReadStringOffset(0, offset, Encoding.UTF8);
+            return this.ReadStringOffset(0, count, Encoding.UTF8);
         }
         /// <summary>
         /// 读取缓冲区起始位到指定偏移位的内容到字符串
         /// </summary>
-        /// <param name="offset">偏移量</param>
+        /// <param name="count">要读取的字符数</param>
         /// <param name="encoding">编码</param>
         /// <returns>字符串</returns>
-        public override string ReadStringOffset(int offset, Encoding encoding)
+        public override string ReadStringOffset(int count, Encoding encoding)
         {
-            return this.ReadStringOffset(0, offset, encoding);
+            return this.ReadStringOffset(0, count, encoding);
+        }
+        /// <summary>
+        /// 读取缓冲区指定起始位到要读取的字符数到字符串
+        /// </summary>
+        /// <param name="startPosition">起始位置</param>
+        /// <param name="count">要读取的字符数</param>
+        /// <returns>字符串</returns>
+        public override string ReadStringOffset(long startPosition, int count)
+        {
+            return this.ReadStringOffset(startPosition, count, Encoding.UTF8);
         }
         /// <summary>
         /// 读取缓冲区指定起始位到指定偏移位的内容到字符串
         /// </summary>
         /// <param name="startPosition">起始位置</param>
-        /// <param name="offset">偏移量</param>
-        /// <returns>字符串</returns>
-        public override string ReadStringOffset(long startPosition, int offset)
-        {
-            return this.ReadStringOffset(startPosition, offset, Encoding.UTF8);
-        }
-        /// <summary>
-        /// 读取缓冲区指定起始位到指定偏移位的内容到字符串
-        /// </summary>
-        /// <param name="startPosition">起始位置</param>
-        /// <param name="offset">偏移量</param>
+        /// <param name="count">要读取的字符数</param>
         /// <param name="encoding">编码</param>
         /// <returns>字符串</returns>
-        public override string ReadStringOffset(long startPosition, int offset, Encoding encoding)
+        public override string ReadStringOffset(long startPosition, int count, Encoding encoding)
         {
             Preconditions.CheckLessZero(startPosition, "startPosition");
-            Preconditions.CheckLessZero(offset, "offset");
+            Preconditions.CheckLessZero(count, "offset");
             Preconditions.CheckNotNull(encoding, "encoding");
-            var buffer = this.ReadByteOffset(startPosition, offset);
+            var buffer = this.ReadByteOffset(startPosition, count);
             var baseString = encoding.GetString(buffer);
 
             if (this.EnableSmartGzip)
@@ -207,13 +159,13 @@ namespace EasyBinaryFile.Reader
             return this.ReadByte(startPosition, startPosition + offset);
         }
         /// <summary>
-        /// 读取缓冲区起始位到指定偏移位的内容到字节数组
+        /// 读取缓冲区起始位到要读取的字符数到字节数组
         /// </summary>
-        /// <param name="offset">偏移量</param>
+        /// <param name="count">要读取的字符数</param>
         /// <returns>字节数组</returns>
-        public override byte[] ReadByte(int offset)
+        public override byte[] ReadByte(int count)
         {
-            return this.ReadByte(0, offset);
+            return this.ReadByte(0, count);
         }
         /// <summary>
         /// 读取缓冲区指定起始位到指定结束位置的内容到字节数组

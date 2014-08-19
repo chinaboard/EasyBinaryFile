@@ -5,33 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace EasyBinaryFile.Writer
+namespace EasyBinaryFile.BF
 {
-    public class BinaryFileWrite : IBinaryFileWrite, IDisposable
+    public class BinaryFileWrite : AbstractBinaryFileWrite, IDisposable
     {
-
-        #region 属性
-        /// <summary>
-        /// 对象是否已释放
-        /// </summary>
-        public bool IsDisposed { get; private set; }
-        /// <summary>
-        /// 是否开启字符串智能压缩
-        /// </summary>
-        public bool EnableSmartGzip { get; private set; }
-        /// <summary>
-        /// 基础二进制写入流
-        /// </summary>
-        public BinaryWriter BaseWriter { get { return new BinaryWriter(this._bufferStream); } }
-        /// <summary>
-        /// 获取或设置当前流中的位置
-        /// </summary>
-        public long Position { get { return this._bufferStream.Position; } set { this._bufferStream.Position = value; } }
-        /// <summary>
-        /// 获取用字节表示的流长度
-        /// </summary>
-        public long Length { get { return this._bufferStream.Length; } }
-        #endregion
 
         #region 构造
         /// <summary>
@@ -39,16 +16,9 @@ namespace EasyBinaryFile.Writer
         /// </summary>
         /// <param name="bufferStream">BufferStream</param>
         /// <param name="enableSmartGzip">是否开启字符串智能压缩</param>
-        public BinaryFileWrite(BufferedStream bufferStream, bool enableSmartGzip = true, int bufferSize = 4096)
+        public BinaryFileWrite(BufferedStream bufferStream, bool enableSmartGzip = true)
+            : base(bufferStream, enableSmartGzip)
         {
-            Preconditions.CheckNotNull(bufferStream, "bufferStream");
-            if (bufferSize < 4096)
-                bufferSize = 4096;
-
-            this.EnableSmartGzip = enableSmartGzip;
-
-            this._bufferSize = bufferSize;
-            this._bufferStream = bufferStream;
         }
         /// <summary>
         /// 构造方法
@@ -57,16 +27,8 @@ namespace EasyBinaryFile.Writer
         /// <param name="enableSmartGzip">是否开启字符串智能压缩</param>
         /// <param name="bufferSize">缓冲区大小</param>
         public BinaryFileWrite(FileStream fileStream, bool enableSmartGzip = true, int bufferSize = 4096)
+            : base(fileStream, enableSmartGzip, bufferSize)
         {
-            Preconditions.CheckNotNull(fileStream, "fileStream");
-            if (bufferSize < 4096)
-                bufferSize = 4096;
-
-            this.EnableSmartGzip = enableSmartGzip;
-
-            this._fileStream = fileStream;
-            this._bufferSize = bufferSize;
-            this._bufferStream = new BufferedStream(this._fileStream, this._bufferSize);
         }
         /// <summary>
         /// 构造方法
@@ -77,19 +39,9 @@ namespace EasyBinaryFile.Writer
         /// <param name="access">文件控制方式</param>
         /// <param name="enableSmartGzip">是否开启字符串智能压缩</param>
         /// <param name="bufferSize">缓冲区大小</param>
-        public BinaryFileWrite(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Write, int bufferSize = 4096)
+        public BinaryFileWrite(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Read, int bufferSize = 4096)
+            : base(path, enableSmartGzip, share, mode, access, bufferSize)
         {
-            Preconditions.CheckNotBlank(path, "path");
-            if (!File.Exists(path))
-                mode = FileMode.OpenOrCreate;
-            if (bufferSize < 4096)
-                bufferSize = 4096;
-
-            this.EnableSmartGzip = enableSmartGzip;
-
-            this._fileStream = File.Open(path, mode, access, share);
-            this._bufferSize = bufferSize;
-            this._bufferStream = new BufferedStream(this._fileStream, this._bufferSize);
         }
         #endregion
 
@@ -201,95 +153,6 @@ namespace EasyBinaryFile.Writer
             this._binaryWriter.Flush();
         }
 
-
-        /// <summary>
-        /// 向当前流中写入布尔型，并将此流中的当前位置提升写入的字节数
-        /// </summary>
-        /// <param name="value">布尔型</param>
-        public override void Write(bool value)
-        {
-            this.Write(BitConverter.GetBytes(value));
-        }
-        /// <summary>
-        /// 向当前流中写入字符型，并将此流中的当前位置提升写入的字节数
-        /// </summary>
-        /// <param name="value">字符型</param>
-        public override void Write(char value)
-        {
-            this.Write(BitConverter.GetBytes(value));
-        }
-        /// <summary>
-        /// 向当前流中写入双精度浮点型，并将此流中的当前位置提升写入的字节数
-        /// </summary>
-        /// <param name="value">双精度浮点型</param>
-        public override void Write(double value)
-        {
-            this.Write(BitConverter.GetBytes(value));
-        }
-        /// <summary>
-        /// 向当前流中写入浮点型，并将此流中的当前位置提升写入的字节数
-        /// </summary>
-        /// <param name="value">浮点型</param>
-        public override void Write(float value)
-        {
-            this.Write(BitConverter.GetBytes(value));
-        }
-        /// <summary>
-        /// 向当前流中写入整型，并将此流中的当前位置提升写入的字节数
-        /// </summary>
-        /// <param name="value">整型</param>
-        public override void Write(int value)
-        {
-            this.Write(BitConverter.GetBytes(value));
-        }
-        /// <summary>
-        /// 向当前流中写入长整型，并将此流中的当前位置提升写入的字节数
-        /// </summary>
-        /// <param name="value">长整型</param>
-        public override void Write(long value)
-        {
-            this.Write(BitConverter.GetBytes(value));
-        }
-        /// <summary>
-        /// 向当前流中写入短整型，并将此流中的当前位置提升写入的字节数
-        /// </summary>
-        /// <param name="value">短整型</param>
-        public override void Write(short value)
-        {
-            this.Write(BitConverter.GetBytes(value));
-        }
-        /// <summary>
-        /// 向当前流中写入无符号整型，并将此流中的当前位置提升写入的字节数
-        /// </summary>
-        /// <param name="value">无符号整型</param>
-        public override void Write(uint value)
-        {
-            this.Write(BitConverter.GetBytes(value));
-        }
-        /// <summary>
-        /// 向当前流中写入无符号长整型，并将此流中的当前位置提升写入的字节数
-        /// </summary>
-        /// <param name="value">无符号长整型</param>
-        public override void Write(ulong value)
-        {
-            this.Write(BitConverter.GetBytes(value));
-        }
-        /// <summary>
-        /// 向当前流中写入无符号短整型，并将此流中的当前位置提升写入的字节数
-        /// </summary>
-        /// <param name="value">无符号短整型</param>
-        public override void Write(ushort value)
-        {
-            this.Write(BitConverter.GetBytes(value));
-        }
-        /// <summary>
-        /// 向当前流中写入一个字节，并将此流中的当前位置提升写入的字节数
-        /// </summary>
-        /// <param name="value">要写入的字节</param>
-        public override void Write(byte value)
-        {
-            this.Write(new byte[] { value });
-        }
         #endregion
 
         #region Dispose

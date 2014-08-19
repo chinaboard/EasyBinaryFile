@@ -1,6 +1,4 @@
-﻿using EasyBinaryFile.Reader;
-using EasyBinaryFile.Utility;
-using EasyBinaryFile.Writer;
+﻿using EasyBinaryFile.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

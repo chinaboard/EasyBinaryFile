@@ -4,66 +4,32 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using EasyBinaryFile.Utility;
-using EasyBinaryFile.Writer;
-using EasyBinaryFile.Reader;
+using EasyBinaryFile.BF;
 
 namespace EasyBinaryFile
 {
-    public class BinaryFile : IDisposable
+    public class BinaryFile : AbstractBaseBinaryFile, IDisposable
     {
 
         #region 字段
-        private BufferedStream _bufferStream = null;
         private BinaryWriter _binaryWriter = null;
         private BinaryReader _binaryReader = null;
-        private FileStream _fileStream = null;
-        private int _bufferSize = 0;
-        #endregion
-
-        #region 属性
-        /// <summary>
-        /// 对象是否已释放
-        /// </summary>
-        public bool IsDisposed { get; private set; }
-        /// <summary>
-        /// 是否开启字符串智能压缩
-        /// </summary>
-        public bool EnableSmartGzip { get; private set; }
-        /// <summary>
-        /// 获取或设置当前流中的位置
-        /// </summary>
-        public long Position { get { return this._bufferStream.Position; } set { this._bufferStream.Position = value; } }
-        /// <summary>
-        /// 获取用字节表示的流长度
-        /// </summary>
-        public long Length { get { return this._bufferStream.Length; } }
         #endregion
 
         #region 构造
-        public BinaryFile(FileStream fileStream, bool enableSmartGzip = true, int bufferSize = 4096)
+        public BinaryFile(BufferedStream bufferedStream, bool enableSmartGzip = true)
+            : base(bufferedStream, enableSmartGzip)
         {
-            Preconditions.CheckNotNull(fileStream, "fileStream");
-            if (bufferSize < 4096)
-                bufferSize = 4096;
+        }
 
-            this._fileStream = fileStream;
-            this._bufferSize = bufferSize;
-            this._bufferStream = new BufferedStream(this._fileStream, this._bufferSize);
-            this.EnableSmartGzip = enableSmartGzip;
+        public BinaryFile(FileStream fileStream, bool enableSmartGzip = true, int bufferSize = 4096)
+            : base(fileStream, enableSmartGzip, bufferSize)
+        {
         }
 
         public BinaryFile(string path, bool enableSmartGzip = true, FileShare share = FileShare.ReadWrite, FileMode mode = FileMode.OpenOrCreate, FileAccess access = FileAccess.ReadWrite, int bufferSize = 4096)
+            : base(path, enableSmartGzip, share, mode, access, bufferSize)
         {
-            Preconditions.CheckNotBlank(path, "path");
-            if (!File.Exists(path))
-                mode = FileMode.OpenOrCreate;
-            if (bufferSize < 4096)
-                bufferSize = 4096;
-
-            this._fileStream = File.Open(path, mode, access, share);
-            this._bufferSize = bufferSize;
-            this._bufferStream = new BufferedStream(this._fileStream, this._bufferSize);
-            this.EnableSmartGzip = enableSmartGzip;
         }
         #endregion
 
