@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using EasyBinaryFile.Utility;
 using EasyBinaryFile.BF;
+using EasyBinaryFile.BF.Reader;
+using EasyBinaryFile.BF.Writer;
 
 namespace EasyBinaryFile
 {

@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace EasyBinaryFile.BF
+namespace EasyBinaryFile.BF.Reader
 {
     public abstract class AbstractBinaryFileRead : AbstractBaseBinaryFile
     {
@@ -33,24 +33,6 @@ namespace EasyBinaryFile.BF
             : base(path, enableSmartGzip, share, mode, access, bufferSize)
         {
         }
-        #endregion
-
-        #region 抽象方法
-        public abstract string ReadString();
-        public abstract string ReadString(long startPosition, long endPosition);
-        public abstract string ReadString(Encoding encoding);
-        public abstract string ReadString(long startPosition, long endPosition, Encoding encoding);
-
-
-        public abstract string ReadStringOffset(int count);
-        public abstract string ReadStringOffset(int count, Encoding encoding);
-        public abstract string ReadStringOffset(long startPosition, int count);
-        public abstract string ReadStringOffset(long startPosition, int count, Encoding encoding);
-
-
-        public abstract byte[] ReadByteOffset(long startPosition, int offset);
-        public abstract byte[] ReadByte(int count);
-        public abstract byte[] ReadByte(long startPosition, long endPosition);
         #endregion
     }
 }

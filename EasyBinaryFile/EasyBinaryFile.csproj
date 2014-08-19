@@ -42,11 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BF\AbstractBaseBinaryFile.cs" />
+    <Compile Include="BF\Reader\IBinaryFileRead.cs" />
+    <Compile Include="BF\Writer\IBinaryFileWrite.cs" />
     <Compile Include="BinaryFile.cs" />
-    <Compile Include="BF\BinaryFileRead.cs" />
-    <Compile Include="BF\BinaryFileWrite.cs" />
-    <Compile Include="BF\AbstractBinaryFileRead.cs" />
-    <Compile Include="BF\AbstractBinaryFileWrite.cs" />
+    <Compile Include="BF\Reader\BinaryFileRead.cs" />
+    <Compile Include="BF\Writer\BinaryFileWrite.cs" />
+    <Compile Include="BF\Reader\AbstractBinaryFileRead.cs" />
+    <Compile Include="BF\Writer\AbstractBinaryFileWrite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
