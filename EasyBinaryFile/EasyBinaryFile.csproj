@@ -47,8 +47,8 @@
     <Compile Include="BinaryFile.cs" />
     <Compile Include="BF\Reader\BinaryFileRead.cs" />
     <Compile Include="BF\Writer\BinaryFileWrite.cs" />
-    <Compile Include="BF\Reader\AbstractBinaryFileRead.cs" />
-    <Compile Include="BF\Writer\AbstractBinaryFileWrite.cs" />
+    <Compile Include="BF\Reader\BaseBinaryFileRead.cs" />
+    <Compile Include="BF\Writer\BaseBinaryFileWrite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
