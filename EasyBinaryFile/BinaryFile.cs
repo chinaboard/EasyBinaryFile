@@ -54,16 +54,6 @@ namespace EasyBinaryFile
             Preconditions.CheckDisposed(this.IsDisposed, this.GetType().Name);
             return new BinaryFileWrite(this._bufferStream, this.EnableSmartGzip);
         }
-        /// <summary>
-        /// 设置当前缓冲流的位置
-        /// </summary>
-        /// <param name="offset">相对于origin的字节偏移量</param>
-        /// <param name="origin">相对于新位置的参考点</param>
-        /// <returns>当前缓冲流中的新位置</returns>
-        public override long Seek(long offset, SeekOrigin origin)
-        {
-            return this._bufferStream.Seek(offset, origin);
-        }
         #endregion
 
         #region Dispose

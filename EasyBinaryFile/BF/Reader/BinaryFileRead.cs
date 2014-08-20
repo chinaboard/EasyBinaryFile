@@ -46,17 +46,6 @@ namespace EasyBinaryFile.BF.Reader
         #endregion
 
         #region 方法
-        /// <summary>
-        /// 设置当前缓冲流的位置
-        /// </summary>
-        /// <param name="offset">相对于origin的字节偏移量</param>
-        /// <param name="origin">相对于新位置的参考点</param>
-        /// <returns>当前缓冲流中的新位置</returns>
-        public override long Seek(long offset, SeekOrigin origin)
-        {
-            return this._bufferStream.Seek(offset, origin);
-        }
-
 
         /// <summary>
         /// 读取缓冲区的所有内容到字符串
