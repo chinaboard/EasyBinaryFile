@@ -14,9 +14,11 @@ namespace EasyBinaryFile.Demo
     {
         static void Main(string[] args)
         {
-            Test1();
+            //Test1();
             Console.WriteLine();
             //Test2();
+            Test3();
+
             Console.ReadLine();
         }
         static void Test1()
@@ -96,7 +98,7 @@ namespace EasyBinaryFile.Demo
             //string str = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest";
             str += str; str += str; str += str; str += str; str += str; str += str;
             str += str; str += str; str += str; str += str; str += str; str += str;
-            long length =123;
+            long length = 123;
             sw.Start();
             for (int i = 0; i < Count; i++)
             {
@@ -121,6 +123,29 @@ namespace EasyBinaryFile.Demo
             Console.WriteLine(length);
             Console.WriteLine(length * Count / 1024 + "KB");
             Console.WriteLine(str.Length * Count / 1024 + "KB");
+        }
+
+        static void Test3()
+        {
+            File.Delete(@"z:\te.ed");
+            var ef = new BinaryFile(@"z:\te.ed");
+            Stopwatch sw = new Stopwatch();
+            var writer = ef.GetWriter();
+            var reader = ef.GetReader();
+            int w = sizeof(int);
+            int count = 200000;
+            int l = w * count;
+            sw.Start();
+            writer.Write(1, count);
+            sw.Stop();
+
+            Console.WriteLine(sw.ElapsedMilliseconds);
+
+            var x = new FileInfo(@"z:\te.ed");
+            ef.Dispose();
+
+            Console.WriteLine(x.Length == l);
+
         }
     }
 }

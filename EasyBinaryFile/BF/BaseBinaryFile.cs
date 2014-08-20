@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EasyBinaryFile.BF
 {
-    public abstract class AbstractBaseBinaryFile
+    public abstract class BaseBinaryFile
     {
         #region 字段
         protected BufferedStream _bufferStream = null;
@@ -36,7 +36,7 @@ namespace EasyBinaryFile.BF
         #endregion 
 
         #region 构造函数
-        internal AbstractBaseBinaryFile(FileStream fileStream, bool enableSmartGzip = true, int bufferSize = 4096)
+        internal BaseBinaryFile(FileStream fileStream, bool enableSmartGzip = true, int bufferSize = 4096)
         {
             Preconditions.CheckNotNull(fileStream, "fileStream");
             if (bufferSize < 4096)
@@ -48,7 +48,7 @@ namespace EasyBinaryFile.BF
             this._bufferSize = bufferSize;
             this._bufferStream = new BufferedStream(this._fileStream, this._bufferSize);
         }
-        internal AbstractBaseBinaryFile(BufferedStream bufferStream, bool enableSmartGzip = true)
+        internal BaseBinaryFile(BufferedStream bufferStream, bool enableSmartGzip = true)
         {
             Preconditions.CheckNotNull(bufferStream, "bufferStream");
 
@@ -56,7 +56,7 @@ namespace EasyBinaryFile.BF
 
             this._bufferStream = bufferStream;
         }
-        internal AbstractBaseBinaryFile(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Read, int bufferSize = 4096)
+        internal BaseBinaryFile(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Read, int bufferSize = 4096)
         {
             Preconditions.CheckNotBlank(path, "path");
             if (!File.Exists(path))

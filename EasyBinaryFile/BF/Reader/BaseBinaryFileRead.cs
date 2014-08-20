@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EasyBinaryFile.BF.Reader
 {
-    public abstract class AbstractBinaryFileRead : AbstractBaseBinaryFile
+    public abstract class BaseBinaryFileRead : BaseBinaryFile
     {
         #region 字段
         protected BinaryReader _binaryReader = null;
@@ -21,17 +21,17 @@ namespace EasyBinaryFile.BF.Reader
         #endregion
 
         #region 构造函数
-        internal AbstractBinaryFileRead(FileStream fileStream, bool enableSmartGzip = true, int bufferSize = 4096)
+        internal BaseBinaryFileRead(FileStream fileStream, bool enableSmartGzip = true, int bufferSize = 4096)
             : base(fileStream, enableSmartGzip, bufferSize)
         {
 
         }
-        internal AbstractBinaryFileRead(BufferedStream bufferStream, bool enableSmartGzip = true)
+        internal BaseBinaryFileRead(BufferedStream bufferStream, bool enableSmartGzip = true)
             : base(bufferStream, enableSmartGzip)
         {
 
         }
-        internal AbstractBinaryFileRead(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Read, int bufferSize = 4096)
+        internal BaseBinaryFileRead(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Read, int bufferSize = 4096)
             : base(path, enableSmartGzip, share, mode, access, bufferSize)
         {
 

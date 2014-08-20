@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EasyBinaryFile.BF.Reader
 {
-    public class BinaryFileRead : AbstractBinaryFileRead, IDisposable
+    public class BinaryFileRead : BaseBinaryFileRead, IDisposable
     {
 
         #region 构造

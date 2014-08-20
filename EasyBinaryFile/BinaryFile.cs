@@ -10,7 +10,7 @@ using EasyBinaryFile.BF.Writer;
 
 namespace EasyBinaryFile
 {
-    public class BinaryFile : AbstractBaseBinaryFile, IDisposable
+    public class BinaryFile : BaseBinaryFile, IDisposable
     {
 
         #region 字段
