@@ -8,7 +8,7 @@ using System.Text;
 namespace EasyBinaryFile.BF.Writer
 {
 
-    public abstract class AbstractBinaryFileWrite : AbstractBaseBinaryFile ,IBinaryFileWrite
+    public abstract class AbstractBinaryFileWrite : AbstractBaseBinaryFile
     {
         #region 字段
         protected BinaryWriter _binaryWriter = null;

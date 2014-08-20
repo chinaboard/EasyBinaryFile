@@ -71,5 +71,9 @@ namespace EasyBinaryFile.BF
             this._bufferStream = new BufferedStream(this._fileStream, this._bufferSize);
         }
         #endregion
+
+        #region 方法
+        public abstract long Seek(long offset, SeekOrigin origin);
+        #endregion
     }
 }
