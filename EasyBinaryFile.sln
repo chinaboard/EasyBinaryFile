@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyBinaryFile", "EasyBinar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyBinaryFile.Demo", "EasyBinaryFile.Demo\EasyBinaryFile.Demo.csproj", "{F2E39BDD-5A86-4D82-A6D9-2F53220535B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyBinaryFile.Utility", "EasyBinaryFile.Utility\EasyBinaryFile.Utility.csproj", "{68387487-34C8-4DEB-B6F1-22D8C8A45B96}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{F2E39BDD-5A86-4D82-A6D9-2F53220535B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2E39BDD-5A86-4D82-A6D9-2F53220535B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2E39BDD-5A86-4D82-A6D9-2F53220535B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68387487-34C8-4DEB-B6F1-22D8C8A45B96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68387487-34C8-4DEB-B6F1-22D8C8A45B96}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68387487-34C8-4DEB-B6F1-22D8C8A45B96}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68387487-34C8-4DEB-B6F1-22D8C8A45B96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

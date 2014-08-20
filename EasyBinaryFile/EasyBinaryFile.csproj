@@ -50,12 +50,8 @@
     <Compile Include="BF\Reader\BaseBinaryFileRead.cs" />
     <Compile Include="BF\Writer\BaseBinaryFileWrite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EasyBinaryFile.Utility\EasyBinaryFile.Utility.csproj">
-      <Project>{68387487-34c8-4deb-b6f1-22d8c8a45b96}</Project>
-      <Name>EasyBinaryFile.Utility</Name>
-    </ProjectReference>
+    <Compile Include="Utility\Preconditions.cs" />
+    <Compile Include="Utility\SmartGzip.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
