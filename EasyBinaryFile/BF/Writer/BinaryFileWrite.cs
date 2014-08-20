@@ -143,7 +143,7 @@ namespace EasyBinaryFile.BF.Writer
         public virtual void Write(long startPosition, byte[] value)
         {
             Preconditions.CheckLessZero(startPosition, "startPosition");
-            Preconditions.CheckNotNull(value, "data");
+            Preconditions.CheckNotNull(value, "value");
 
             this._bufferStream.Seek(startPosition, SeekOrigin.Begin);
 
@@ -153,113 +153,150 @@ namespace EasyBinaryFile.BF.Writer
             this._binaryWriter.Flush();
         }
 
-        #region 方法
+
         /// <summary>
-        /// 向当前流中写入布尔型，并将此流中的当前位置提升写入的字节数
+        /// 向当前流中写入一个或多个布尔型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">布尔型</param>
-        public virtual void Write(bool value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(bool value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
         /// <summary>
-        /// 向当前流中写入字符型，并将此流中的当前位置提升写入的字节数
+        /// 向当前流中写入一个或多个字符型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">字符型</param>
-        public virtual void Write(char value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(char value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
         /// <summary>
-        /// 向当前流中写入双精度浮点型，并将此流中的当前位置提升写入的字节数
+        /// 向当前流中写入一个或多个双精度浮点型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">双精度浮点型</param>
-        public virtual void Write(double value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(double value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
         /// <summary>
-        /// 向当前流中写入浮点型，并将此流中的当前位置提升写入的字节数
+        /// 向当前流中写入一个或多个浮点型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">浮点型</param>
-        public virtual void Write(float value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(float value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
         /// <summary>
-        /// 向当前流中写入整型，并将此流中的当前位置提升写入的字节数
+        /// 向当前流中写入一个或多个整型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">整型</param>
-        public virtual void Write(int value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(int value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
         /// <summary>
-        /// 向当前流中写入长整型，并将此流中的当前位置提升写入的字节数
+        /// 向当前流中写入一个或多个长整型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">长整型</param>
-        public virtual void Write(long value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(long value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
         /// <summary>
-        /// 将一个十进制值写入当前流，并将流位置提升十六个字节。
+        /// 将一个或多个十进制值写入当前流，并将流位置提升十六个字节。
         /// </summary>
         /// <param name="value">要写入的十进制值</param>
-        public virtual void Write(decimal value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(decimal value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
         /// <summary>
-        /// 向当前流中写入短整型，并将此流中的当前位置提升写入的字节数
+        /// 向当前流中写入一个或多个短整型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">短整型</param>
-        public virtual void Write(short value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(short value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
         /// <summary>
-        /// 向当前流中写入无符号整型，并将此流中的当前位置提升写入的字节数
+        /// 向当前流中写入一个或多个无符号整型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">无符号整型</param>
-        public virtual void Write(uint value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(uint value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
         /// <summary>
-        /// 向当前流中写入无符号长整型，并将此流中的当前位置提升写入的字节数
+        /// 向当前流中写入一个或多个无符号长整型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">无符号长整型</param>
-        public virtual void Write(ulong value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(ulong value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
         /// <summary>
-        /// 向当前流中写入无符号短整型，并将此流中的当前位置提升写入的字节数
+        /// 向当前流中写入一个或多个无符号短整型，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">无符号短整型</param>
-        public virtual void Write(ushort value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(ushort value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
         /// <summary>
-        /// 向当前流中写入一个字节，并将此流中的当前位置提升写入的字节数
+        /// 向当前流中写入一个或多个字节，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">要写入的字节</param>
-        public virtual void Write(byte value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(byte value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
         /// <summary>
-        /// 向当前流中写入一个有符号字节，并将此流中的当前位置提升写入的字节数
+        /// 向当前流中写入一个或多个有符号字节，并将此流中的当前位置提升写入的字节数
         /// </summary>
         /// <param name="value">要写入的字节</param>
-        public virtual void Write(sbyte value)
+        /// <param name="count">写入数量</param>
+        public virtual void Write(sbyte value, int count = 1)
         {
-            this.BaseWriter.Write(value);
+            Preconditions.CheckLessZero(count, "count");
+            for (int i = 0; i < count; i++)
+                this.BaseWriter.Write(value);
         }
-        #endregion
-
         #endregion
 
         #region Dispose

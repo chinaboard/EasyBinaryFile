@@ -24,14 +24,17 @@ namespace EasyBinaryFile.BF.Reader
         internal AbstractBinaryFileRead(FileStream fileStream, bool enableSmartGzip = true, int bufferSize = 4096)
             : base(fileStream, enableSmartGzip, bufferSize)
         {
+
         }
         internal AbstractBinaryFileRead(BufferedStream bufferStream, bool enableSmartGzip = true)
             : base(bufferStream, enableSmartGzip)
         {
+
         }
         internal AbstractBinaryFileRead(string path, bool enableSmartGzip = true, FileShare share = FileShare.None, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Read, int bufferSize = 4096)
             : base(path, enableSmartGzip, share, mode, access, bufferSize)
         {
+
         }
         #endregion
     }
